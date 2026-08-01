@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spamboat - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Analytics <span class="highlight">Dashboard</span></h1>
+            <a href="/" class="btn btn-secondary">Back to Home</a>
+        </header>
+
+        <main class="dashboard-grid">
+            <section class="card">
+                <h2>Model Performance</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='accuracy_graph.png') }}" alt="Accuracy Graph">
+                </div>
+                <div class="stats">
+                    {% for model, acc in accuracies.items() %}
+                    <div class="stat-item">
+                        <strong>{{ model }}:</strong> {{ "%.2f"|format(acc * 100) }}%
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Dataset Overview</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='dataset_balance.png') }}" alt="Dataset Balance">
+                </div>
+                <div class="stats">
+                    <p><strong>Total Samples:</strong> {{ overview.total_samples }}</p>
+                    <p><strong>Fake (1):</strong> {{ overview.fake_samples }}</p>
+                    <p><strong>Genuine (0):</strong> {{ overview.genuine_samples }}</p>
+                </div>
+            </section>
+
+            <section class="card full-width">
+                <h2>Data Preview</h2>
+                <div class="table-responsive">
+                    {{ overview.preview | safe }}
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
